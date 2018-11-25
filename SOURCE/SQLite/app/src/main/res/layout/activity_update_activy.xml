@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateActivy">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_top"
+        android:orientation="vertical">
+
+        <TextView
+
+            android:textSize="25sp"
+            android:textColor="#000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Sửa thông tin" />
+    </LinearLayout>
+   <LinearLayout
+       android:paddingTop="25dp"
+       android:paddingLeft="10dp"
+       android:paddingRight="10dp"
+       android:paddingBottom="15dp"
+       android:background="@drawable/bg_up"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="250dp">
+       <EditText
+           android:gravity="center"
+           android:hint="ID"
+           android:focusable="false"
+           android:id="@+id/edit_id"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <EditText
+           android:hint="Nhắc Nhở"
+           android:gravity="center"
+           android:focusable="true"
+           android:id="@+id/edit_NhacNho_up"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content" />
+       <Button
+           android:id="@+id/btn_up"
+           android:layout_marginTop="40dp"
+           android:layout_gravity="center"
+           android:background="@drawable/bg_btn"
+           android:textAllCaps="false"
+           android:text="Sửa"
+           android:layout_width="150dp"
+           android:layout_height="wrap_content" />
+   </LinearLayout>
+
+</LinearLayout>

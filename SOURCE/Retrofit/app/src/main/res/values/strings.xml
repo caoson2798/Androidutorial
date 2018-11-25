@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Retrofit</string>
+    <string name="my_text"><u>Create a new account</u>.</string>
+</resources>
