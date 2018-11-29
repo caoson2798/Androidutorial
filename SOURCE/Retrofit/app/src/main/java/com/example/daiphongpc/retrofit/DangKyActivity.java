@@ -41,6 +41,8 @@ public class DangKyActivity extends AppCompatActivity {
     Button btnCofirm,btnCancel;
     int REQUEST_CODE=113;
     String realPath="";
+    String taikhoan="";
+    String matkhau="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,34 +96,59 @@ public class DangKyActivity extends AppCompatActivity {
         btnCofirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                File file=new File(realPath);
-                String file_path=file.getAbsolutePath();
-                String[] mangTenFile=file_path.split("\\.");
-                file_path=mangTenFile[0]+System.currentTimeMillis()+mangTenFile[1];
-                Log.d("path1", file_path);
+                taikhoan=editNewUser.getText().toString();
+                matkhau=editNewPass.getText().toString();
+                if (taikhoan.isEmpty() || matkhau.isEmpty()){
+                    Toast.makeText(DangKyActivity.this,"Nhập đầy đủ thông tin để đăng ký",Toast.LENGTH_LONG).show();
+                }else {
+                    File file=new File(realPath);
+                    String file_path=file.getAbsolutePath();
+                    String[] mangTenFile=file_path.split("\\.");
+                    file_path=mangTenFile[0]+System.currentTimeMillis()+"."+mangTenFile[1];
+                    Log.d("path1", file_path);
 
-                RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/from-data"),file);
-                MultipartBody.Part body=MultipartBody.Part.createFormData("uploated_image",file_path,requestBody);
-                DataClient dataClient=APIUtils.getData();
-                Call<String> photo=dataClient.upLoadPhto(body);
-                photo.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if(response !=null){
-                            String message=response.body();
-                            Log.d("ktt", message);
-                            Toast.makeText(DangKyActivity.this,"Confirm sucess",Toast.LENGTH_LONG).show();
-                        }else {
-                            Log.d("bbb", "onResponse: ");
+                    RequestBody requestBody=RequestBody.create(MediaType.parse("multipart/from-data"),file);
+                    MultipartBody.Part body=MultipartBody.Part.createFormData("uploated_image",file_path,requestBody);
+                    DataClient dataClient=APIUtils.getData();
+                    Call<String> photo=dataClient.upLoadPhto(body);
+                    photo.enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if(response !=null){
+                                String message=response.body();
+                                Log.d("ktt", message);
+                                DataClient client=APIUtils.getData();
+                                Call<String> callback=client.InsertData(taikhoan,matkhau,APIUtils.BaseUrl +"image/"+message);
+                                callback.enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        String result=response.body();
+                                        Log.d("ktre", "onResponse: "+response);
+                                        if (result!=null){
+                                            Toast.makeText(DangKyActivity.this,"Register success!",Toast.LENGTH_LONG).show();
+                                            finish();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+
+                                    }
+                                });
+
+                            }else {
+                                Log.d("bbb", "onResponse: ");
+                            }
+
                         }
 
-                    }
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Log.d("err1", "onFailure: "+t.toString());
+                        }
+                    });
+                }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Log.d("err1", "onFailure: "+t.toString());
-                    }
-                });
             }
         });
     }
